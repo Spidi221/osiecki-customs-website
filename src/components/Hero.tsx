@@ -1,0 +1,72 @@
+import { Shield } from 'lucide-react';
+
+const Hero = () => (
+  <section className="relative min-h-screen flex items-center bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
+    <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-gradient-to-r from-orange-600/5 via-transparent to-red-600/5"></div>
+      <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, orange 0%, transparent 50%), radial-gradient(circle at 75% 75%, red 0%, transparent 50%)`, opacity: 0.1 }}></div>
+    </div>
+    <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-full blur-3xl"></div>
+    <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-br from-red-500/5 to-orange-500/5 rounded-full blur-3xl"></div>
+    
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="space-y-8">
+          <div className="inline-flex items-center bg-gradient-to-r from-orange-600/20 to-red-600/20 text-orange-400 text-sm font-semibold px-6 py-3 rounded-full border border-orange-500/30 backdrop-blur-sm">
+            <Shield className="w-4 h-4 mr-2" />
+            Certyfikowany warsztat automotive
+          </div>
+          
+          <div className="space-y-4">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight">
+              <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">Bezgotówkowe</span><br />
+              <span className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 bg-clip-text text-transparent">naprawy</span><br />
+              <span className="text-white">powypadkowe</span>
+            </h1>
+          </div>
+          
+          <p className="text-xl text-zinc-300 leading-relaxed max-w-2xl">
+            Rozliczamy się bezpośrednio z Twoim ubezpieczycielem. Płacisz tylko franchise - o resztę formalności zadbamy my. Nowoczesne technologie, wieloletnie doświadczenie.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-6">
+            <a href="#wycena" className="group relative bg-gradient-to-r from-orange-600 to-red-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-orange-500/25">
+              <span className="relative z-10">Umów wycenę</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-700 to-red-700 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </a>
+            <a href="tel:+48123456789" className="group border-2 border-orange-500 text-orange-500 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 hover:bg-orange-500 hover:text-black relative overflow-hidden">
+              <span className="relative z-10">Zadzwoń teraz</span>
+              <div className="absolute inset-0 bg-orange-500 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></div>
+            </a>
+          </div>
+          
+          <div className="grid grid-cols-3 gap-8 pt-12 border-t border-zinc-800">
+            <div className="text-center">
+              <div className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">15+</div>
+              <div className="text-sm text-zinc-400 font-medium">lat doświadczenia</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">1000+</div>
+              <div className="text-sm text-zinc-400 font-medium">napraw rocznie</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">100%</div>
+              <div className="text-sm text-zinc-400 font-medium">zadowolonych klientów</div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="relative">
+          <div className="relative bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-3xl h-96 lg:h-[500px] flex items-center justify-center shadow-2xl border border-zinc-700 overflow-hidden">
+             <img src="/Malowanie_converted.png" alt="Lakiernik Osiecki Customs w pracy" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+             <span className="relative text-zinc-400 text-xl font-medium z-10">Osiecki Customs</span>
+          </div>
+          <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full blur-2xl animate-pulse"></div>
+          <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full blur-xl animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+export default Hero;
