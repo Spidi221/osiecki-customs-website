@@ -2,6 +2,7 @@ import { Shield } from 'lucide-react';
 
 const Hero = () => (
   <section className="relative min-h-screen flex items-center bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
+    {/* Subtelne tła dla dodania głębi */}
     <div className="absolute inset-0">
       <div className="absolute inset-0 bg-gradient-to-r from-orange-600/5 via-transparent to-red-600/5"></div>
       <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, orange 0%, transparent 50%), radial-gradient(circle at 75% 75%, red 0%, transparent 50%)`, opacity: 0.1 }}></div>
@@ -14,19 +15,20 @@ const Hero = () => (
         <div className="space-y-8">
           <div className="inline-flex items-center bg-gradient-to-r from-orange-600/20 to-red-600/20 text-orange-400 text-sm font-semibold px-6 py-3 rounded-full border border-orange-500/30 backdrop-blur-sm">
             <Shield className="w-4 h-4 mr-2" />
-            Certyfikowany warsztat automotive
+            Polecany warsztat blacharsko-lakierniczy
           </div>
           
           <div className="space-y-4">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight">
-              <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">Bezgotówkowe</span><br />
+              <span className="bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">Bezgotówkowe</span><br />
               <span className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 bg-clip-text text-transparent">naprawy</span><br />
               <span className="text-white">powypadkowe</span>
             </h1>
           </div>
           
+          {/* ZMIANA: Zaktualizowany tekst opisu zgodnie z Twoim wyborem */}
           <p className="text-xl text-zinc-300 leading-relaxed max-w-2xl">
-            Rozliczamy się bezpośrednio z Twoim ubezpieczycielem. Płacisz tylko franchise - o resztę formalności zadbamy my. Nowoczesne technologie, wieloletnie doświadczenie.
+            Rozliczamy szkodę bezpośrednio z Twoim ubezpieczycielem, zdejmując z Ciebie ciężar formalności. Zaufaj naszemu doświadczeniu i nowoczesnym technologiom – przywrócimy Twoje auto do perfekcyjnego stanu.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6">
@@ -42,11 +44,11 @@ const Hero = () => (
           
           <div className="grid grid-cols-3 gap-8 pt-12 border-t border-zinc-800">
             <div className="text-center">
-              <div className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">15+</div>
+              <div className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">8+</div>
               <div className="text-sm text-zinc-400 font-medium">lat doświadczenia</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">1000+</div>
+              <div className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">100+</div>
               <div className="text-sm text-zinc-400 font-medium">napraw rocznie</div>
             </div>
             <div className="text-center">
