@@ -26,7 +26,6 @@ const Hero = () => (
             </h1>
           </div>
           
-          {/* ZMIANA: Zaktualizowany tekst opisu zgodnie z Twoim wyborem */}
           <p className="text-xl text-zinc-300 leading-relaxed max-w-2xl">
             Rozliczamy szkodę bezpośrednio z Twoim ubezpieczycielem, zdejmując z Ciebie ciężar formalności. Zaufaj naszemu doświadczeniu i nowoczesnym technologiom – przywrócimy Twoje auto do perfekcyjnego stanu.
           </p>
@@ -59,9 +58,13 @@ const Hero = () => (
         </div>
         
         <div className="relative">
-          <div className="relative bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-3xl h-96 lg:h-[500px] flex items-center justify-center shadow-2xl border border-zinc-700 overflow-hidden">
-             <img src="/Malowanie_converted.png" alt="Lakiernik Osiecki Customs w pracy" className="absolute inset-0 w-full h-full object-cover opacity-30" />
-             <span className="relative text-zinc-400 text-xl font-medium z-10">Osiecki Customs</span>
+          {/* ZMIANA: Podmiana tła na Twoje zdjęcie i poprawa stylów */}
+          <div className="relative bg-zinc-900 rounded-3xl h-96 lg:h-[500px] flex items-center justify-center shadow-2xl border border-zinc-700 overflow-hidden">
+             <img src="/Malowanie_converted.png" alt="Lakiernik Osiecki Customs w trakcie pracy nad elementem samochodu" className="absolute inset-0 w-full h-full object-cover opacity-40 transition-opacity duration-300 hover:opacity-60" />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+             <h3 className="relative text-2xl font-bold text-white z-10 text-center drop-shadow-lg">
+                Jakość, na której możesz polegać
+             </h3>
           </div>
           <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full blur-2xl animate-pulse"></div>
           <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full blur-xl animate-pulse"></div>
