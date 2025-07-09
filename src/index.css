@@ -1,3 +1,9 @@
+/* Smooth scroll behavior dla całej strony */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Istniejący kod Tailwind - zostaw bez zmian */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
