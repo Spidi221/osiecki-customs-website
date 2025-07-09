@@ -38,7 +38,7 @@ const Header = () => {
           
           {/* Logo - zawsze widoczne */}
           <a href="#" className="flex-shrink-0">
-            <img className="h-40 w-auto" src="/logo.png" alt="Osiecki Customs Logo" />
+            <img className="h-36 w-auto" src="/logo.png" alt="Osiecki Customs Logo" />
           </a>
 
           {/* Nawigacja na dużych ekranach - ukryta na mobile */}

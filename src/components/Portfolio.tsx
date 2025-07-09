@@ -1,5 +1,6 @@
 import { projects } from '../data/galleryData';
 import FadeIn from './animations/FadeIn';
+import LazyImage from './LazyImage';
 
 const Portfolio = () => {
   return (
@@ -27,8 +28,7 @@ const Portfolio = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    {/* ZMIANA: Dodane klasy w-full h-64 object-cover */}
-                    <img
+                    <LazyImage
                       src={project.beforeImage}
                       alt={`Przed naprawą: ${project.title}`}
                       className="w-full h-64 object-cover rounded-lg shadow-lg"
@@ -36,8 +36,7 @@ const Portfolio = () => {
                     <p className="text-center mt-2 font-semibold text-red-400">PRZED</p>
                   </div>
                   <div>
-                    {/* ZMIANA: Dodane klasy w-full h-64 object-cover */}
-                    <img
+                    <LazyImage
                       src={project.afterImage}
                       alt={`Po naprawie: ${project.title}`}
                       className="w-full h-64 object-cover rounded-lg shadow-lg"

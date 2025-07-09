@@ -1,4 +1,5 @@
 import { Shield } from 'lucide-react';
+import LazyImage from './LazyImage';
 
 const Hero = () => (
   <section className="relative min-h-screen flex items-center bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
@@ -52,9 +53,14 @@ const Hero = () => (
           </div>
         </div>
         <div className="relative">
-          {/* ZMIANA: Usunięty tekst "Jakość, na której możesz polegać" */}
           <div className="relative bg-zinc-900 rounded-3xl h-96 lg:h-[500px] flex items-center justify-center shadow-2xl border border-zinc-700 overflow-hidden">
-             <img src="/Malowanie_converted.png" alt="Lakiernik Osiecki Customs w trakcie pracy nad elementem samochodu" className="absolute inset-0 w-full h-full object-cover opacity-40 transition-opacity duration-300 hover:opacity-60" />
+             <div className="absolute inset-0 w-full h-full opacity-70 transition-opacity duration-300 hover:opacity-90">
+               <LazyImage 
+                 src="/Malowanie_converted.png" 
+                 alt="Lakiernik Osiecki Customs w trakcie pracy nad elementem samochodu" 
+                 className="w-full h-full object-cover" 
+               />
+             </div>
              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           </div>
           <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full blur-2xl animate-pulse"></div>

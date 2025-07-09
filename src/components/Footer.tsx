@@ -5,16 +5,12 @@ const Footer = () => (
         <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 25% 75%, orange 0%, transparent 50%), radial-gradient(circle at 75% 25%, red 0%, transparent 50%)`, opacity: 0.03 }}></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-3 gap-16">
-                <div>
-                    <img src="/1.png" alt="Logo Osiecki Customs" className="h-12 w-auto mb-8" />
-                    <p className="text-zinc-400 mb-8 leading-relaxed text-lg">
-                        Profesjonalne usługi blacharsko-lakiernicze. 
-                        Bezgotówkowe naprawy powypadkowe z wieloletnim doświadczeniem w branży automotive.
-                    </p>
+            <div className="grid md:grid-cols-3 gap-16 items-start">
+                <div className="flex flex-col">
+                    <img src="/logo.png" alt="Logo Osiecki Customs" className="h-48 w-auto max-w-48 mb-0" />
                     <div className="text-zinc-500 text-sm space-y-2">
-                        <p className="font-semibold">NIP: 123-456-78-90</p>
-                        <p className="font-semibold">REGON: 123456789</p>
+                        <p className="font-semibold">NIP: 1231400958</p>
+                        <p className="font-semibold">REGON: 380465813</p>
                     </div>
                 </div>
                 <div>
@@ -43,7 +39,7 @@ const Footer = () => (
                     <div className="space-y-6 text-zinc-400">
                         <div className="flex items-center">
                             <Phone className="w-6 h-6 text-orange-500 mr-4" />
-                            <span className="text-lg">+48 123 456 789</span>
+                            <span className="text-lg">+48 607 550 305</span>
                         </div>
                         <div className="flex items-center">
                             <Mail className="w-6 h-6 text-orange-500 mr-4" />
@@ -51,7 +47,7 @@ const Footer = () => (
                         </div>
                         <div className="flex items-start">
                             <MapPin className="w-6 h-6 text-orange-500 mr-4 mt-1" />
-                            <span className="text-lg">ul. Przykładowa 123<br />00-000 Warszawa</span>
+                            <span className="text-lg">ul. Grójecka 56<br />05-530 Góra Kalwaria</span>
                         </div>
                     </div>
                 </div>
