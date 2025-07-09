@@ -20,7 +20,6 @@ const AboutContact = () => {
           </FadeIn>
           
           <FadeIn direction="right" delay={150}>
-            {/* ZMIANA: Poprawiony numer telefonu */}
             <div className="bg-black p-8 rounded-2xl border border-zinc-800 space-y-4">
               <h3 className="text-2xl font-bold text-white">Dane kontaktowe</h3>
               <div className="text-zinc-300 space-y-2">
@@ -37,6 +36,7 @@ const AboutContact = () => {
                   allowFullScreen={true}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
+                  title="Mapa lokalizacji Osiecki Customs - ul. Grójecka 56, Góra Kalwaria"
                 ></iframe>
               </div>
             </div>

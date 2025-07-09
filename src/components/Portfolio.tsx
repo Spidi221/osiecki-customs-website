@@ -32,6 +32,8 @@ const Portfolio = () => {
                       src={project.beforeImage}
                       alt={`Przed naprawą: ${project.title}`}
                       className="w-full h-64 object-cover rounded-lg shadow-lg"
+                      width={400}
+                      height={256}
                     />
                     <p className="text-center mt-2 font-semibold text-red-400">PRZED</p>
                   </div>
@@ -40,6 +42,8 @@ const Portfolio = () => {
                       src={project.afterImage}
                       alt={`Po naprawie: ${project.title}`}
                       className="w-full h-64 object-cover rounded-lg shadow-lg"
+                      width={400}
+                      height={256}
                     />
                     <p className="text-center mt-2 font-semibold text-green-400">PO</p>
                   </div>

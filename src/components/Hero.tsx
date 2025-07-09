@@ -58,7 +58,7 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-700 to-red-700 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </a>
               
-              {/* ZMIANA: Inteligentny przycisk telefonu */}
+              {/* Inteligentny przycisk telefonu */}
               <div className="relative">
                 <a 
                   href="tel:+48607550305" 
@@ -111,7 +111,9 @@ const Hero = () => {
                  <LazyImage 
                    src="/Malowanie_converted.png" 
                    alt="Lakiernik Osiecki Customs w trakcie pracy nad elementem samochodu" 
-                   className="w-full h-full object-cover" 
+                   className="w-full h-full object-cover"
+                   width={600}
+                   height={500}
                  />
                </div>
                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>

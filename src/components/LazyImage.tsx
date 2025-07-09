@@ -6,19 +6,23 @@ interface LazyImageProps {
   alt: string;
   className?: string;
   placeholderClassName?: string;
+  width?: number;
+  height?: number;
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({ 
   src, 
   alt, 
   className = '', 
-  placeholderClassName = '' 
+  placeholderClassName = '',
+  width,
+  height
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [elementRef, isVisible] = useIntersectionObserver({
     threshold: 0.1,
-    rootMargin: '50px', // Zacznij ładować 50px przed pojawieniem się
+    rootMargin: '50px',
   });
 
   const handleImageLoad = () => {
@@ -33,8 +37,9 @@ const LazyImage: React.FC<LazyImageProps> = ({
     <div 
       ref={elementRef} 
       className={`relative overflow-hidden ${className}`}
+      style={width && height ? { aspectRatio: `${width}/${height}` } : undefined}
     >
-      {/* Placeholder - pokazuje się gdy obrazek się jeszcze nie załadował */}
+      {/* Placeholder */}
       {!imageLoaded && !imageError && (
         <div 
           className={`absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900 animate-pulse flex items-center justify-center ${placeholderClassName}`}
@@ -55,17 +60,19 @@ const LazyImage: React.FC<LazyImageProps> = ({
         </div>
       )}
 
-      {/* Właściwy obrazek - ładuje się tylko gdy jest widoczny */}
+      {/* Właściwy obrazek */}
       {isVisible && (
         <img
           src={src}
           alt={alt}
+          width={width}
+          height={height}
           className={`transition-opacity duration-500 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           } ${className}`}
           onLoad={handleImageLoad}
           onError={handleImageError}
-          loading="lazy" // Dodatkowa natywna optymalizacja przeglądarki
+          loading="lazy"
         />
       )}
     </div>
