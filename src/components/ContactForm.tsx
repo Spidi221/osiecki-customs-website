@@ -1,8 +1,8 @@
 const ContactForm = () => (
-  <section id="wycena" className="py-20 bg-black">
+  // ZMIANA: Dodana klasa scroll-mt-24
+  <section id="wycena" className="py-20 bg-black scroll-mt-24">
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="bg-zinc-900 rounded-2xl p-8 sm:p-12 border border-zinc-800">
-        {/* ZMIANA: Usunięta etykieta nad nagłówkiem zgodnie z zadaniem 3.1 */}
         <h2 className="text-4xl sm:text-5xl font-black text-center text-white mb-4">
           Umów bezpłatną wycenę
         </h2>

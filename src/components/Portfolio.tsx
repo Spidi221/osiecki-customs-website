@@ -1,14 +1,13 @@
 import { galleryData } from '../data/galleryData';
 
 const Portfolio = () => (
-  <section id="portfolio" className="py-20 bg-black">
+  // ZMIANA: Dodana klasa scroll-mt-24
+  <section id="portfolio" className="py-20 bg-black scroll-mt-24">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* ZMIANA: Usunięta etykieta nad nagłówkiem, zgodnie z Etapem 3 */}
       <h2 className="text-4xl sm:text-5xl font-black text-center text-white mb-16">
         Nasze realizacje
       </h2>
       
-      {/* ZMIANA: Dynamiczne renderowanie galerii z pliku danych */}
       <div className="space-y-16">
         {galleryData.map((item) => (
           <div key={item.id} className="bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800">

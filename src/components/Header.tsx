@@ -1,37 +1,29 @@
-import { Phone } from 'lucide-react';
-
 const Header = () => (
-  <header className="bg-black/90 backdrop-blur-xl border-b border-zinc-800 sticky top-0 z-50 shadow-2xl">
+  <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-zinc-800/50">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-20">
-        <div className="flex items-center">
-          {/* Używamy logo 1.png - wersja negatywowa na ciemne tło */}
-          <img src="/1.png" alt="Logo Osiecki Customs" className="h-12 w-auto" />
-        </div>
-        <nav className="hidden md:flex space-x-8">
-          <a href="#uslugi" className="text-zinc-300 hover:text-orange-500 transition-all duration-300 font-medium relative group">
-            Usługi
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"></span>
-          </a>
-          <a href="#realizacje" className="text-zinc-300 hover:text-orange-500 transition-all duration-300 font-medium relative group">
-            Realizacje
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"></span>
-          </a>
-          <a href="#kontakt" className="text-zinc-300 hover:text-orange-500 transition-all duration-300 font-medium relative group">
-            Kontakt
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"></span>
-          </a>
-        </nav>
-        <a href="tel:+48123456789" className="hidden md:inline-flex items-center bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-3 rounded-xl hover:from-orange-700 hover:to-red-700 transition-all duration-300 shadow-xl font-semibold transform hover:scale-105">
-          <Phone className="w-4 h-4 inline mr-2" />
-          Zadzwoń
+      <div className="flex items-center justify-center h-24 gap-12">
+
+        {/* Logo */}
+        <a href="#">
+          <img className="h-40 w-auto" src="/logo.png" alt="Osiecki Customs Logo" />
         </a>
-        {/* Przycisk dla menu mobilnego (logika do dodania w przyszłości) */}
-        <div className="md:hidden">
-          <button className="text-white">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h16"></path></svg>
-          </button>
+
+        {/* Nawigacja */}
+        <nav className="hidden md:flex gap-8">
+          {/* ZMIANA: Zwiększona czcionka z text-lg na text-xl */}
+          <a href="#services" className="text-xl font-medium text-white hover:text-orange-500 transition-colors duration-300">Usługi</a>
+          <a href="#portfolio" className="text-xl font-medium text-white hover:text-orange-500 transition-colors duration-300">Realizacje</a>
+          <a href="#process" className="text-xl font-medium text-white hover:text-orange-500 transition-colors duration-300">Proces</a>
+          <a href="#about" className="text-xl font-medium text-white hover:text-orange-500 transition-colors duration-300">O nas</a>
+        </nav>
+
+        {/* Przycisk CTA */}
+        <div className="hidden md:block">
+          <a href="#wycena" className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-bold text-black bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
+            Wyceń naprawę
+          </a>
         </div>
+        
       </div>
     </div>
   </header>

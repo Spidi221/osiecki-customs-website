@@ -19,9 +19,9 @@ const services = [
 ];
 
 const Services = () => (
-  <section id="services" className="py-20 bg-zinc-900">
+  // ZMIANA: Dodana klasa scroll-mt-24, żeby nawigacja nie chowała się pod headerem
+  <section id="services" className="py-20 bg-zinc-900 scroll-mt-24">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* ZMIANA: Usunięta etykieta nad nagłówkiem zgodnie z zadaniem 3.1 */}
       <h2 className="text-4xl sm:text-5xl font-black text-center text-white mb-16">
         Nasze usługi
       </h2>

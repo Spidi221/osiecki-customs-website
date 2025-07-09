@@ -24,9 +24,9 @@ const steps = [
 ];
 
 const Process = () => (
-  <section id="process" className="py-20 bg-black">
+  // ZMIANA: Dodana klasa scroll-mt-24
+  <section id="process" className="py-20 bg-black scroll-mt-24">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* ZMIANA: Usunięta etykieta nad nagłówkiem zgodnie z zadaniem 3.1 */}
       <h2 className="text-4xl sm:text-5xl font-black text-center text-white mb-16">
         Jak wygląda proces naprawy?
       </h2>
