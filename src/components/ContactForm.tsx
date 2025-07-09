@@ -27,7 +27,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-black scroll-mt-24">
+    <section id="wycena" className="py-20 bg-black scroll-mt-24">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ZMIANA: Opakowujemy cały formularz w komponent FadeIn */}
         <FadeIn>
@@ -50,7 +50,7 @@ const ContactForm = () => {
               <input type="hidden" name="form-name" value="contact" />
               <p className="hidden">
                 <label>
-                  Don’t fill this out if you’re human: <input name="bot-field" />
+                  Don't fill this out if you're human: <input name="bot-field" />
                 </label>
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

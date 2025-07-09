@@ -20,12 +20,12 @@ const AboutContact = () => {
           </FadeIn>
           
           <FadeIn direction="right" delay={150}>
-            {/* ZMIANA: Przywrócone dane kontaktowe i poprawna struktura */}
+            {/* ZMIANA: Poprawiony numer telefonu */}
             <div className="bg-black p-8 rounded-2xl border border-zinc-800 space-y-4">
               <h3 className="text-2xl font-bold text-white">Dane kontaktowe</h3>
               <div className="text-zinc-300 space-y-2">
                 <p><strong className="text-orange-500">Adres:</strong> ul. Grójecka 56, 05-530 Góra Kalwaria</p>
-                <p><strong className="text-orange-500">Telefon:</strong> +48 123 456 789</p>
+                <p><strong className="text-orange-500">Telefon:</strong> +48 607 550 305</p>
                 <p><strong className="text-orange-500">Email:</strong> kontakt@osieckicustoms.pl</p>
               </div>
               <div className="h-64 mt-4 rounded-lg overflow-hidden border-2 border-zinc-700">
