@@ -1,38 +1,44 @@
-export interface GalleryItem {
+export interface Project {
   id: number;
   title: string;
+  category: string;
   description: string;
-  beforeSrc: string;
-  afterSrc: string;
+  beforeImage: string;
+  afterImage: string;
 }
 
-export const galleryData: GalleryItem[] = [
+// Używamy "export const", żeby uniknąć problemów z importem
+export const projects: Project[] = [
   {
     id: 1,
-    title: 'Naprawa tylnego błotnika i drzwi',
-    description: 'Kompleksowa naprawa blacharska z cieniowaniem lakieru.',
-    beforeSrc: '/images/gallery/Przed1.jpg',
-    afterSrc: '/images/gallery/po1.jpg',
+    title: 'Audi A5 - Naprawa Błotnika i Zderzaka',
+    category: 'Blacharstwo i Lakiernictwo',
+    description: 'Kompleksowa naprawa tylnego błotnika i zderzaka z wykorzystaniem technologii cieniowania lakieru, aby zapewnić niewidoczne przejście kolorystyczne.',
+    beforeImage: '/images/gallery/Przed1.jpg',
+    afterImage: '/images/gallery/po1.jpg',
   },
   {
     id: 2,
-    title: 'Wymiana i lakierowanie zderzaka',
-    description: 'Idealne spasowanie i dobór koloru po stłuczce parkingowej.',
-    beforeSrc: '/images/gallery/przed2.jpg',
-    afterSrc: '/images/gallery/po2.jpg',
+    title: 'Bentley Continental - Usuwanie Wgnieceń',
+    category: 'Naprawy bezinwazyjne (PDR)',
+    description: 'Precyzyjne usunięcie wgnieceń na masce bez potrzeby ponownego lakierowania, przywracające idealną gładkość powierzchni.',
+    beforeImage: '/images/gallery/przed2.jpg',
+    afterImage: '/images/gallery/po2.jpg',
   },
   {
     id: 3,
-    title: 'Naprawa progu i drzwi kierowcy',
-    description: 'Usunięcie głębokich wgnieceń i zarysowań.',
-    beforeSrc: '/images/gallery/przed3.jpg',
-    afterSrc: '/images/gallery/po3.jpg',
+    title: 'Subaru Forester - Rekonstrukcja Przodu',
+    category: 'Naprawy powypadkowe',
+    description: 'Wymiana i pasowanie nowych elementów karoserii po kolizji czołowej. Pełne lakierowanie przodu pojazdu z dbałością o fabryczne standardy.',
+    beforeImage: '/images/gallery/przed3.jpg',
+    afterImage: '/images/gallery/po3.jpg',
   },
   {
     id: 4,
-    title: 'Rekonstrukcja przedniego narożnika',
-    description: 'Precyzyjna praca blacharska i lakiernicza po kolizji.',
-    beforeSrc: '/images/gallery/przed4.jpg',
-    afterSrc: '/images/gallery/po4.jpg',
+    title: 'Hyundai ix35 - Szkoda Parkingowa',
+    category: 'Blacharstwo i Lakiernictwo',
+    description: 'Naprawa wgniecenia na przednim błotniku i drzwiach, powstałego w wyniku szkody parkingowej. Zastosowano cieniowanie w celu idealnego dopasowania koloru.',
+    beforeImage: '/images/gallery/przed4.jpg',
+    afterImage: '/images/gallery/po4.jpg',
   },
 ];
