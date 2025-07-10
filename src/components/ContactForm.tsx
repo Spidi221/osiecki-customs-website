@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Check, UploadCloud, X, AlertCircle } from 'lucide-react';
-import emailjs from '@emailjs/browser';
 import FadeIn from './animations/FadeIn';
 import LegalModal from './LegalModal';
 
@@ -11,11 +10,6 @@ const ContactForm = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'privacy' | 'terms' | 'rodo'>('privacy');
-
-  // Konfiguracja EmailJS
-  const EMAILJS_SERVICE_ID = 'service_tuhy7gs';
-  const EMAILJS_TEMPLATE_ID = 'template_ocxggpb';  
-  const EMAILJS_PUBLIC_KEY = 'KQkQZjZWJPEQo3Dy5';
 
   const openModal = (type: 'privacy' | 'terms' | 'rodo') => {
     setModalType(type);
@@ -33,16 +27,6 @@ const ContactForm = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
-  // Konwersja pliku do base64
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -51,55 +35,28 @@ const ContactForm = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
+    // Dodaj pliki do FormData - Netlify automatycznie je obsłuży
+    files.forEach((file, index) => {
+      formData.append(`file-${index}`, file);
+    });
+    
     try {
-      // Przygotuj dane z formularza
-      const templateParams = {
-        from_name: formData.get('name') as string,
-        from_email: formData.get('email') as string,
-        phone: formData.get('phone') as string,
-        message: formData.get('message') as string,
-        to_email: 'kontakt@osieckicustoms.pl', // Twój email
-        reply_to: formData.get('email') as string,
-      };
+      const response = await fetch('/', {
+        method: 'POST',
+        body: formData, // Używamy FormData bezpośrednio dla plików
+      });
 
-      // Konwertuj pliki do base64 i dodaj do templateParams
-      if (files.length > 0) {
-        const attachments = await Promise.all(
-          files.map(async (file) => ({
-            name: file.name,
-            content: await fileToBase64(file),
-            size: file.size
-          }))
-        );
-        
-        // Dodaj pliki do template parameters
-        attachments.forEach((attachment, index) => {
-          (templateParams as any)[`attachment_${index + 1}_name`] = attachment.name;
-          (templateParams as any)[`attachment_${index + 1}_content`] = attachment.content;
-          (templateParams as any)[`attachment_${index + 1}_size`] = attachment.size;
-        });
-        
-        (templateParams as any).attachments_count = attachments.length;
-      }
-
-      // Wyślij email przez EmailJS
-      const response = await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
-
-      if (response.status === 200) {
+      if (response.ok) {
         setIsSubmitted(true);
-        console.log('Email wysłany pomyślnie przez EmailJS');
+        console.log('Formularz wysłany pomyślnie przez Netlify Forms');
         // Przewiń do góry sekcji po pomyślnym wysłaniu
         document.getElementById('wycena')?.scrollIntoView({ 
           behavior: 'smooth', 
           block: 'start' 
         });
       } else {
-        throw new Error('Błąd wysyłania email');
+        console.error('Błąd response:', response.status, response.statusText);
+        throw new Error(`Błąd serwera: ${response.status}`);
       }
     } catch (_error: unknown) {
       console.error('Błąd wysyłania formularza:', _error);
@@ -187,7 +144,23 @@ const ContactForm = () => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+                className="space-y-6"
+              >
+                <input type="hidden" name="form-name" value="contact" />
+                
+                {/* Honeypot field */}
+                <p className="hidden">
+                  <label>
+                    Don't fill this out if you're human: <input name="bot-field" />
+                  </label>
+                </p>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input 
                     required 
