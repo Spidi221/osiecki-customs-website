@@ -1,13 +1,20 @@
 {
   "name": "osiecki-customs-website",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Profesjonalna strona internetowa dla warsztatu blacharsko-lakierniczego Osiecki Customs",
+  "keywords": ["warsztat", "blacharstwo", "lakiernictwo", "naprawy powypadkowe"],
+  "author": "Osiecki Customs",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
+    "build:clean": "rm -rf dist && npm run build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "preview": "vite preview",
+    "preview:dist": "npm run build && vite preview",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "lucide-react": "^0.407.0",
@@ -28,5 +35,9 @@
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

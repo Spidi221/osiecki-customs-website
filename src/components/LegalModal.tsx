@@ -56,7 +56,7 @@ const LegalModal = ({ isOpen, onClose, type }: LegalModalProps) => {
             <section>
               <h3 className="text-lg font-semibold text-orange-500 mb-3">1. Informacje ogólne</h3>
               <p className="text-zinc-300 leading-relaxed mb-4">
-                Administratorem Twoich danych osobowych jest <strong>Osiecki Customs</strong> z siedzibą przy ul. Grójecka 56, 05-530 Góra Kalwaria, NIP: 1231400958.
+                Administratorem Twoich danych osobowych jest <strong>Osiecki Customs</strong> z siedzibą przy ul. Papczyńskiego 1A, 05-530 Góra Kalwaria, NIP: 1231400958.
               </p>
               <p className="text-zinc-300 leading-relaxed">
                 Kontakt: <a href="mailto:kontakt@osieckicustoms.pl" className="text-orange-500 hover:text-orange-400">kontakt@osieckicustoms.pl</a>, tel. +48 607 550 305
@@ -198,7 +198,7 @@ const LegalModal = ({ isOpen, onClose, type }: LegalModalProps) => {
               <div className="bg-zinc-800 p-4 rounded-lg">
                 <p className="text-zinc-300 leading-relaxed">
                   <strong>Osiecki Customs</strong><br />
-                  ul. Grójecka 56<br />
+                  ul. Papczyńskiego 1A<br />
                   05-530 Góra Kalwaria<br />
                   NIP: 1231400958<br />
                   REGON: 380465813<br />

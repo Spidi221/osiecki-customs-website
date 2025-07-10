@@ -1,0 +1,8 @@
+# SPA Fallback - wszystkie 404 kieruj do index.html (React Router)
+/*    /index.html   200
+
+# Redirect z www do non-www (opcjonalnie - ustaw gdy będziesz miał domenę)
+# https://www.osieckicustoms.pl/*  https://osieckicustoms.pl/:splat  301!
+
+# Force HTTPS redirect (opcjonalnie - Netlify robi to automatycznie)
+# http://osieckicustoms.pl/*  https://osieckicustoms.pl/:splat  301!
