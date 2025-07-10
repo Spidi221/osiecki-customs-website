@@ -8,13 +8,12 @@ import AboutContact from './components/AboutContact';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-// import CookieBanner from './components/CookieBanner'; // Na razie wyłączone
+import CookieBanner from './components/CookieBanner';
 
 function App() {
   return (
     <>
       <Header />
-      {/* ZMIANA: Dodajemy div, który "odpycha" treść od góry o wysokość headera */}
       <main className="pt-24 bg-black">
         <Hero />
         <Services />
@@ -26,7 +25,7 @@ function App() {
       </main>
       <Footer />
       <ScrollToTop />
-      {/* <CookieBanner /> */}
+      <CookieBanner />
     </>
   );
 }
