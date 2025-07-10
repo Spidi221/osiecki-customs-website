@@ -65,7 +65,7 @@ const ContactForm = () => {
       // Konwertuj pliki do base64 i dodaj do templateParams
       if (files.length > 0) {
         const attachments = await Promise.all(
-          files.map(async (file, index) => ({
+          files.map(async (file) => ({
             name: file.name,
             content: await fileToBase64(file),
             size: file.size
