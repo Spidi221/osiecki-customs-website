@@ -1,10 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
   <head>
-    </head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Osiecki Customs - Profesjonalne naprawy powypadkowe | Blacharka, lakiernictwo</title>
+    <meta name="title" content="Osiecki Customs - Profesjonalne naprawy powypadkowe | Blacharka, lakiernictwo" />
+    <meta name="description" content="Profesjonalne naprawy powypadkowe w Górze Kalwarii. Blacharka, lakiernictwo, bezpośrednie rozliczenia z ubezpieczycielem. 8+ lat doświadczenia." />
+    <meta name="keywords" content="naprawa powypadkowa, blacharka, lakiernictwo, Góra Kalwaria, ubezpieczenie, auto serwis" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Polish" />
+    <meta name="author" content="Osiecki Customs" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://osieckicustoms.pl/" />
+    <meta property="og:title" content="Osiecki Customs - Profesjonalne naprawy powypadkowe" />
+    <meta property="og:description" content="Profesjonalne naprawy powypadkowe w Górze Kalwarii. Rozliczamy się bezpośrednio z ubezpieczycielem. 8+ lat doświadczenia." />
+    <meta property="og:image" content="https://osieckicustoms.pl/android-chrome-512x512.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://osieckicustoms.pl/" />
+    <meta property="twitter:title" content="Osiecki Customs - Profesjonalne naprawy powypadkowe" />
+    <meta property="twitter:description" content="Profesjonalne naprawy powypadkowe w Górze Kalwarii. Rozliczamy się bezpośrednio z ubezpieczycielem. 8+ lat doświadczenia." />
+    <meta property="twitter:image" content="https://osieckicustoms.pl/android-chrome-512x512.png" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  "name": "Osiecki Customs",
+  "description": "Profesjonalne naprawy powypadkowe i usługi blacharsko-lakiernicze",
+  "url": "https://osieckicustoms.pl",
+  "telephone": "+48607550305",
+  "email": "kontakt@osieckicustoms.pl",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Grójecka 56",
+    "addressLocality": "Góra Kalwaria",
+    "postalCode": "05-530",
+    "addressCountry": "PL"
+  },
+  "openingHours": [
+    "Mo-Fr 07:00-17:00"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 52.0452,
+    "longitude": 21.1951
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "127"
+  },
+  "priceRange": "$$",
+  "image": "https://osieckicustoms.pl/android-chrome-512x512.png"
+}
+    </script>
+  </head>
   <body>
     <div id="root"></div>
     
+    <!-- 
+      UKRYTY FORMULARZ DLA NETLIFY FORMS 
+      Netlify potrzebuje statycznego HTML formularza żeby wykryć go podczas build time.
+      Ten formularz jest ukryty, ale pozwala Netlify utworzyć endpoint dla React formularza.
+      
+      WAŻNE: Nazwy pól muszą dokładnie odpowiadać tym w React formularzu!
+    -->
     <form 
       name="contact" 
       method="POST" 
@@ -13,16 +80,27 @@
       style="display: none;"
     >
       <input type="hidden" name="form-name" value="contact" />
-      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
       
+      <!-- Honeypot field - ochrona przed botami -->
+      <label>
+        Don't fill this out if you're human: <input name="bot-field" />
+      </label>
+      
+      <!-- Wszystkie podstawowe pola z React formularza -->
       <input name="name" type="text" />
       <input name="phone" type="tel" />
       <input name="email" type="email" />
       <textarea name="message"></textarea>
+      <input name="consent" type="checkbox" />
+      
+      <!-- Pola dla plików - dodajemy możliwość uploadowania wielu plików -->
+      <!-- Netlify rozpozna że to pole może przyjmować pliki -->
+      <input name="files" type="file" multiple />
+      
+      <!-- Dodatkowe pola dla indywidualnych plików (na wszelki wypadek) -->
+      <input name="file-0" type="file" />
       <input name="file-1" type="file" />
       <input name="file-2" type="file" />
-      <input name="file-3" type="file" />
-      <input name="consent" type="checkbox" />
     </form>
     
     <script type="module" src="/src/main.tsx"></script>

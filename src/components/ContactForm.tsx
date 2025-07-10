@@ -1,11 +1,9 @@
-// src/components/ContactForm.tsx
 import { useState } from 'react';
 import { Check, UploadCloud, X, AlertCircle } from 'lucide-react';
 import FadeIn from './animations/FadeIn';
 import LegalModal from './LegalModal';
 
 const ContactForm = () => {
-  // ... stany bez zmian ...
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -13,12 +11,10 @@ const ContactForm = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'privacy' | 'terms' | 'rodo'>('privacy');
 
-
   const openModal = (type: 'privacy' | 'terms' | 'rodo') => {
     setModalType(type);
     setModalOpen(true);
   };
-
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -31,41 +27,70 @@ const ContactForm = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError('');
-
-    const formData = new FormData(e.currentTarget);
     
-    // ZMIANA KLUCZOWA: Usuwamy standardowe pole 'files' i dodajemy pliki z unikalnymi nazwami
-    formData.delete('files'); // Usuwamy pole, które dodał input
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData();
+    
+    // KLUCZOWE: Dodaj form-name jako pierwsze pole
+    formData.append('form-name', 'contact');
+    
+    // Pobierz wszystkie dane z formularza
+    const formInputs = new FormData(form);
+    
+    // Dodaj podstawowe pola (bez plików)
+    for (const [key, value] of formInputs.entries()) {
+      if (key !== 'files') { // Pomijamy pole files - dodamy je osobno
+        formData.append(key, value);
+      }
+    }
+    
+    // KRYTYCZNE: Dodaj pliki w sposób zrozumiały dla Netlify
+    // Każdy plik osobno z unikalną nazwą
     files.forEach((file, index) => {
-      formData.append(`file-${index + 1}`, file); // Dodajemy file-1, file-2, etc.
+      formData.append(`file-${index}`, file, file.name);
     });
-
+    
+    // Debug: sprawdź co wysyłamy
+    console.log('=== DEBUG FORM DATA ===');
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value instanceof File ? `FILE: ${value.name} (${value.size} bytes)` : value);
+    }
+    
     try {
-      const response = await fetch('/', { // Netlify wymaga POST na główną ścieżkę
+      const response = await fetch('/', {
         method: 'POST',
-        body: formData,
+        body: formData, // Bez headers - pozwól przeglądarce ustawić Content-Type
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      
       if (response.ok) {
         setIsSubmitted(true);
-        document.getElementById('wycena')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        console.log('✅ Formularz wysłany pomyślnie przez Netlify Forms');
+        // Przewiń do góry sekcji po pomyślnym wysłaniu
+        document.getElementById('wycena')?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
       } else {
+        const errorText = await response.text();
+        console.error('❌ Błąd response:', response.status, response.statusText, errorText);
         throw new Error(`Błąd serwera: ${response.status}`);
       }
-    } catch (error) {
-      console.error('Błąd wysyłania formularza:', error);
+    } catch (error: unknown) {
+      console.error('❌ Błąd wysyłania formularza:', error);
       setSubmitError('Wystąpił błąd podczas wysyłania. Spróbuj ponownie lub zadzwoń: +48 607 550 305');
     } finally {
       setIsSubmitting(false);
     }
   };
-  
-    const formatFileSize = (bytes: number) => {
+
+  const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB'];
@@ -73,11 +98,8 @@ const ContactForm = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  // ... reszta komponentu (część JSX) pozostaje bez zmian ...
-  // Ważne, żeby w JSX input na pliki miał wciąż atrybut `multiple`
-  // <input id="file-upload" name="files" type="file" multiple ... />
-  // To zapewnia dobre UX, a my i tak przejmujemy kontrolę w `handleSubmit`.
-    if (isSubmitted) {
+  // Jeśli formularz został wysłany pomyślnie
+  if (isSubmitted) {
     return (
       <>
         <section id="wycena" className="py-20 bg-black scroll-mt-24">
@@ -100,7 +122,11 @@ const ContactForm = () => {
                   onClick={() => {
                     setIsSubmitted(false);
                     setFiles([]);
-                    document.getElementById('wycena')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Przewiń do formularza po resecie
+                    document.getElementById('wycena')?.scrollIntoView({ 
+                      behavior: 'smooth', 
+                      block: 'start' 
+                    });
                   }}
                   className="text-orange-500 hover:text-orange-400 transition-colors underline"
                 >
@@ -110,7 +136,13 @@ const ContactForm = () => {
             </FadeIn>
           </div>
         </section>
-        <LegalModal isOpen={modalOpen} onClose={() => setModalOpen(false)} type={modalType} />
+
+        {/* Legal Modal */}
+        <LegalModal 
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          type={modalType}
+        />
       </>
     );
   }
@@ -128,35 +160,64 @@ const ContactForm = () => {
                 Wypełnij formularz, a my skontaktujemy się z Tobą w ciągu 24 godzin, aby omówić szczegóły i przedstawić ofertę.
               </p>
 
-              {submitError && (
-                <div className="bg-red-900/20 border border-red-500/50 rounded-lg p-4 mb-6 flex items-start">
-                  <AlertCircle className="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-red-300 text-sm">{submitError}</p>
-                </div>
-              )}
-
-              <form
-                name="contact"
-                method="POST"
-                data-netlify="true"
-                data-netlify-honeypot="bot-field"
-                onSubmit={handleSubmit}
-                className="space-y-6"
-              >
+              <form onSubmit={handleSubmit} name="contact" className="space-y-6">
+                {/* KLUCZOWE: Ukryte pole form-name dla Netlify */}
                 <input type="hidden" name="form-name" value="contact" />
-                <p className="hidden">
-                  <label>
-                    Don't fill this out if you're human: <input name="bot-field" />
-                  </label>
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input required name="name" type="text" placeholder="Imię i nazwisko" className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" disabled={isSubmitting} />
-                  <input required name="phone" type="tel" placeholder="Numer telefonu" className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" disabled={isSubmitting} />
-                </div>
-                <input required name="email" type="email" placeholder="Adres email" className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" disabled={isSubmitting} />
-                <textarea required name="message" placeholder="Krótki opis szkody (marka, model, rocznik, co się stało)" rows={5} className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all resize-none" disabled={isSubmitting} />
                 
+                {/* Honeypot field - ochrona przed botami */}
+                <div style={{ display: 'none' }}>
+                  <label>
+                    Don't fill this out if you're human: 
+                    <input name="bot-field" />
+                  </label>
+                </div>
+
+                {submitError && (
+                  <div className="bg-red-900/20 border border-red-500/30 text-red-400 p-4 rounded-lg flex items-center">
+                    <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0" />
+                    <p>{submitError}</p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <input 
+                    required 
+                    name="name" 
+                    type="text" 
+                    placeholder="Imię i nazwisko" 
+                    className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" 
+                    disabled={isSubmitting}
+                  />
+
+                  <input 
+                    required 
+                    name="phone" 
+                    type="tel" 
+                    placeholder="Numer telefonu" 
+                    className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" 
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <input 
+                  required 
+                  name="email" 
+                  type="email" 
+                  placeholder="Adres email" 
+                  className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" 
+                  disabled={isSubmitting}
+                />
+
+                <textarea 
+                  required 
+                  name="message" 
+                  placeholder="Krótki opis szkody (marka, model, rocznik, co się stało)" 
+                  rows={5} 
+                  className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all resize-none" 
+                  disabled={isSubmitting}
+                />
+                
+                {/* Upload plików */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-2">
                     Dodaj zdjęcia uszkodzeń (opcjonalnie, max 3 pliki)
@@ -167,7 +228,16 @@ const ContactForm = () => {
                       <div className="flex text-sm text-zinc-400">
                         <label htmlFor="file-upload" className="relative cursor-pointer bg-zinc-800 rounded-md font-medium text-orange-500 hover:text-orange-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-zinc-900 focus-within:ring-orange-500 px-2 transition-colors">
                           <span>Wybierz pliki</span>
-                          <input id="file-upload" name="files" type="file" className="sr-only" multiple accept="image/*,.pdf" onChange={handleFileChange} disabled={isSubmitting} />
+                          <input 
+                            id="file-upload" 
+                            name="files" 
+                            type="file" 
+                            className="sr-only" 
+                            multiple 
+                            accept="image/*,.pdf" 
+                            onChange={handleFileChange}
+                            disabled={isSubmitting}
+                          />
                         </label>
                         <p className="pl-1">lub przeciągnij i upuść</p>
                       </div>
@@ -177,6 +247,7 @@ const ContactForm = () => {
                     </div>
                   </div>
                   
+                  {/* Lista wybranych plików */}
                   {files.length > 0 && (
                     <div className="mt-4 space-y-2">
                       <h4 className="text-sm font-medium text-zinc-300">Wybrane pliki:</h4>
@@ -187,7 +258,12 @@ const ContactForm = () => {
                             <span className="text-white text-sm truncate max-w-xs">{file.name}</span>
                             <span className="text-zinc-400 text-xs">({formatFileSize(file.size)})</span>
                           </div>
-                          <button type="button" onClick={() => removeFile(index)} className="text-zinc-500 hover:text-red-400 transition-colors" disabled={isSubmitting}>
+                          <button
+                            type="button"
+                            onClick={() => removeFile(index)}
+                            className="text-zinc-500 hover:text-red-400 transition-colors"
+                            disabled={isSubmitting}
+                          >
                             <X className="w-4 h-4" />
                           </button>
                         </div>
@@ -196,9 +272,16 @@ const ContactForm = () => {
                   )}
                 </div>
 
+                {/* Zgoda na przetwarzanie danych */}
                 <div className="space-y-4">
                   <label className="flex items-start space-x-3 cursor-pointer">
-                    <input required type="checkbox" name="consent" className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-zinc-700 bg-zinc-800 rounded" disabled={isSubmitting} />
+                    <input 
+                      required 
+                      type="checkbox" 
+                      name="consent" 
+                      className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-zinc-700 bg-zinc-800 rounded" 
+                      disabled={isSubmitting}
+                    />
                     <span className="text-sm text-zinc-300 leading-relaxed">
                       Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z 
                       <button type="button" onClick={() => openModal('rodo')} className="text-orange-500 hover:text-orange-400 underline mx-1">
@@ -221,7 +304,7 @@ const ContactForm = () => {
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-zinc-400 border-t-transparent rounded-full animate-spin mr-3"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-zinc-400 mr-3"></div>
                         Wysyłanie...
                       </>
                     ) : (
@@ -234,7 +317,13 @@ const ContactForm = () => {
           </FadeIn>
         </div>
       </section>
-      <LegalModal isOpen={modalOpen} onClose={() => setModalOpen(false)} type={modalType} />
+
+      {/* Legal Modal */}
+      <LegalModal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        type={modalType}
+      />
     </>
   );
 };
