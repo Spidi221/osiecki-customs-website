@@ -31,35 +31,47 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError('');
+
+    // ZMIANA: Tworzymy FormData ręcznie dla pełnej kontroli
+    const formData = new FormData();
+    const formElement = e.currentTarget;
+
+    // Pobieramy wartości z pól formularza
+    const name = (formElement.elements.namedItem('name') as HTMLInputElement).value;
+    const phone = (formElement.elements.namedItem('phone') as HTMLInputElement).value;
+    const email = (formElement.elements.namedItem('email') as HTMLInputElement).value;
+    const message = (formElement.elements.namedItem('message') as HTMLTextAreaElement).value;
+    const consent = (formElement.elements.namedItem('consent') as HTMLInputElement).checked;
+
+    // Dodajemy wszystkie pola do FormData, zgodnie z ukrytym formularzem w index.html
+    formData.append('form-name', 'contact');
+    formData.append('name', name);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('message', message);
+    formData.append('consent', String(consent));
     
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    
-    // Dodaj pliki do FormData z prawidłowymi nazwami dla Netlify
+    // WAŻNE: Używamy nazwy 'files[]' dla wielu plików, Netlify tego oczekuje.
+    // Jeśli to nie zadziała, spróbujemy z 'files'
     files.forEach((file) => {
-      formData.append('files', file); // Używaj tej samej nazwy co w statycznym formularzu
+      formData.append('files[]', file);
     });
-    
+
     try {
-      const response = await fetch('/', {
+      // ZMIANA: Fetchujemy do aktualnej ścieżki, co jest bezpieczniejszą praktyką
+      const response = await fetch(formElement.action, {
         method: 'POST',
-        body: formData, // FormData bezpośrednio, bez konwersji na URLSearchParams
+        body: formData,
       });
 
       if (response.ok) {
         setIsSubmitted(true);
-        console.log('Formularz wysłany pomyślnie przez Netlify Forms');
-        // Przewiń do góry sekcji po pomyślnym wysłaniu
-        document.getElementById('wycena')?.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
-        });
+        document.getElementById('wycena')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        console.error('Błąd response:', response.status, response.statusText);
-        throw new Error(`Błąd serwera: ${response.status}`);
+        throw new Error(`Błąd serwera: ${response.status} ${response.statusText}`);
       }
-    } catch (_error: unknown) {
-      console.error('Błąd wysyłania formularza:', _error);
+    } catch (error: unknown) {
+      console.error('Błąd wysyłania formularza:', error);
       setSubmitError('Wystąpił błąd podczas wysyłania. Spróbuj ponownie lub zadzwoń: +48 607 550 305');
     } finally {
       setIsSubmitting(false);
@@ -74,7 +86,6 @@ const ContactForm = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  // Jeśli formularz został wysłany pomyślnie
   if (isSubmitted) {
     return (
       <>
@@ -98,11 +109,7 @@ const ContactForm = () => {
                   onClick={() => {
                     setIsSubmitted(false);
                     setFiles([]);
-                    // Przewiń do formularza po resecie
-                    document.getElementById('wycena')?.scrollIntoView({ 
-                      behavior: 'smooth', 
-                      block: 'start' 
-                    });
+                    document.getElementById('wycena')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
                   className="text-orange-500 hover:text-orange-400 transition-colors underline"
                 >
@@ -112,13 +119,7 @@ const ContactForm = () => {
             </FadeIn>
           </div>
         </section>
-
-        {/* Legal Modal */}
-        <LegalModal 
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          type={modalType}
-        />
+        <LegalModal isOpen={modalOpen} onClose={() => setModalOpen(false)} type={modalType} />
       </>
     );
   }
@@ -136,7 +137,6 @@ const ContactForm = () => {
                 Wypełnij formularz, a my skontaktujemy się z Tobą w ciągu 24 godzin, aby omówić szczegóły i przedstawić ofertę.
               </p>
 
-              {/* Error message */}
               {submitError && (
                 <div className="bg-red-900/20 border border-red-500/50 rounded-lg p-4 mb-6 flex items-start">
                   <AlertCircle className="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" />
@@ -144,17 +144,17 @@ const ContactForm = () => {
                 </div>
               )}
 
+              {/* ZMIANA: Dodajemy `action` do formularza, aby było jasne, gdzie wysyłamy dane */}
               <form
                 name="contact"
                 method="POST"
+                action="/"
                 data-netlify="true"
                 data-netlify-honeypot="bot-field"
                 onSubmit={handleSubmit}
                 className="space-y-6"
               >
                 <input type="hidden" name="form-name" value="contact" />
-                
-                {/* Honeypot field */}
                 <p className="hidden">
                   <label>
                     Don't fill this out if you're human: <input name="bot-field" />
@@ -162,43 +162,12 @@ const ContactForm = () => {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input 
-                    required 
-                    name="name" 
-                    type="text" 
-                    placeholder="Imię i nazwisko" 
-                    className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" 
-                    disabled={isSubmitting}
-                  />
-                  <input 
-                    required 
-                    name="phone" 
-                    type="tel" 
-                    placeholder="Numer telefonu" 
-                    className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" 
-                    disabled={isSubmitting}
-                  />
+                  <input required name="name" type="text" placeholder="Imię i nazwisko" className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" disabled={isSubmitting} />
+                  <input required name="phone" type="tel" placeholder="Numer telefonu" className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" disabled={isSubmitting} />
                 </div>
-
-                <input 
-                  required 
-                  name="email" 
-                  type="email" 
-                  placeholder="Adres email" 
-                  className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" 
-                  disabled={isSubmitting}
-                />
-
-                <textarea 
-                  required 
-                  name="message" 
-                  placeholder="Krótki opis szkody (marka, model, rocznik, co się stało)" 
-                  rows={5} 
-                  className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all resize-none" 
-                  disabled={isSubmitting}
-                />
+                <input required name="email" type="email" placeholder="Adres email" className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all" disabled={isSubmitting} />
+                <textarea required name="message" placeholder="Krótki opis szkody (marka, model, rocznik, co się stało)" rows={5} className="w-full bg-zinc-800 border border-zinc-700 text-white p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-all resize-none" disabled={isSubmitting} />
                 
-                {/* Upload plików */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-2">
                     Dodaj zdjęcia uszkodzeń (opcjonalnie, max 3 pliki)
@@ -209,16 +178,8 @@ const ContactForm = () => {
                       <div className="flex text-sm text-zinc-400">
                         <label htmlFor="file-upload" className="relative cursor-pointer bg-zinc-800 rounded-md font-medium text-orange-500 hover:text-orange-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-zinc-900 focus-within:ring-orange-500 px-2 transition-colors">
                           <span>Wybierz pliki</span>
-                          <input 
-                            id="file-upload" 
-                            name="files" 
-                            type="file" 
-                            className="sr-only" 
-                            multiple 
-                            accept="image/*,.pdf" 
-                            onChange={handleFileChange}
-                            disabled={isSubmitting}
-                          />
+                          {/* WAŻNE: Nazwa pola to 'files[]', żeby Netlify wiedział, że to tablica */}
+                          <input id="file-upload" name="files[]" type="file" className="sr-only" multiple accept="image/*,.pdf" onChange={handleFileChange} disabled={isSubmitting} />
                         </label>
                         <p className="pl-1">lub przeciągnij i upuść</p>
                       </div>
@@ -228,7 +189,6 @@ const ContactForm = () => {
                     </div>
                   </div>
                   
-                  {/* Lista wybranych plików */}
                   {files.length > 0 && (
                     <div className="mt-4 space-y-2">
                       <h4 className="text-sm font-medium text-zinc-300">Wybrane pliki:</h4>
@@ -239,12 +199,7 @@ const ContactForm = () => {
                             <span className="text-white text-sm truncate max-w-xs">{file.name}</span>
                             <span className="text-zinc-400 text-xs">({formatFileSize(file.size)})</span>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => removeFile(index)}
-                            className="text-zinc-500 hover:text-red-400 transition-colors"
-                            disabled={isSubmitting}
-                          >
+                          <button type="button" onClick={() => removeFile(index)} className="text-zinc-500 hover:text-red-400 transition-colors" disabled={isSubmitting}>
                             <X className="w-4 h-4" />
                           </button>
                         </div>
@@ -253,16 +208,9 @@ const ContactForm = () => {
                   )}
                 </div>
 
-                {/* Zgoda na przetwarzanie danych */}
                 <div className="space-y-4">
                   <label className="flex items-start space-x-3 cursor-pointer">
-                    <input 
-                      required 
-                      type="checkbox" 
-                      name="consent" 
-                      className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-zinc-700 bg-zinc-800 rounded" 
-                      disabled={isSubmitting}
-                    />
+                    <input required type="checkbox" name="consent" className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-zinc-700 bg-zinc-800 rounded" disabled={isSubmitting} />
                     <span className="text-sm text-zinc-300 leading-relaxed">
                       Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z 
                       <button type="button" onClick={() => openModal('rodo')} className="text-orange-500 hover:text-orange-400 underline mx-1">
@@ -298,13 +246,7 @@ const ContactForm = () => {
           </FadeIn>
         </div>
       </section>
-
-      {/* Legal Modal */}
-      <LegalModal 
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        type={modalType}
-      />
+      <LegalModal isOpen={modalOpen} onClose={() => setModalOpen(false)} type={modalType} />
     </>
   );
 };
