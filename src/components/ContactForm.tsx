@@ -35,15 +35,15 @@ const ContactForm = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
-    // Dodaj pliki do FormData - Netlify automatycznie je obsłuży
-    files.forEach((file, index) => {
-      formData.append(`file-${index}`, file);
+    // Dodaj pliki do FormData z prawidłowymi nazwami dla Netlify
+    files.forEach((file) => {
+      formData.append('files', file); // Używaj tej samej nazwy co w statycznym formularzu
     });
     
     try {
       const response = await fetch('/', {
         method: 'POST',
-        body: formData, // Używamy FormData bezpośrednio dla plików
+        body: formData, // FormData bezpośrednio, bez konwersji na URLSearchParams
       });
 
       if (response.ok) {
