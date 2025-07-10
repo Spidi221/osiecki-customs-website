@@ -27,7 +27,6 @@ const ContactForm = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
-  // UPROSZCZONA funkcja handleSubmit bez plików (na test)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -36,13 +35,12 @@ const ContactForm = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
-    // TYMCZASOWO: pomijamy pliki, testujemy tylko podstawowe pola
+    // Tymczasowo wyłączamy upload plików - skupiamy się na działającym formularzu
     // files.forEach((file, index) => {
     //   formData.append(`file-${index}`, file);
     // });
     
     try {
-      // Podstawowe podejście dla Netlify Forms
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -51,15 +49,15 @@ const ContactForm = () => {
 
       if (response.ok) {
         setIsSubmitted(true);
-        setFiles([]); // Wyczyść pliki po udanym wysłaniu
+        console.log('Formularz wysłany pomyślnie');
       } else {
-        const errorText = await response.text();
-        console.error('Response error:', response.status, errorText);
-        throw new Error(`Błąd ${response.status}: ${errorText || 'Nieznany błąd'}`);
+        console.error('Błąd response:', response.status, response.statusText);
+        throw new Error(`Błąd serwera: ${response.status}`);
       }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setSubmitError(`Wystąpił błąd podczas wysyłania: ${error.message}. Spróbuj ponownie lub zadzwoń: +48 607 550 305`);
+    } catch (_error: unknown) {
+      // Poprawka TypeScript: używamy _error ze znanym typem unknown
+      console.error('Błąd wysyłania formularza:', _error);
+      setSubmitError('Wystąpił błąd podczas wysyłania. Spróbuj ponownie lub zadzwoń: +48 607 550 305');
     } finally {
       setIsSubmitting(false);
     }
@@ -192,7 +190,8 @@ const ContactForm = () => {
                   disabled={isSubmitting}
                 />
                 
-                {/* Upload plików */}
+                {/* Upload plików - tymczasowo wyłączony */}
+                {false && (
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-2">
                     Dodaj zdjęcia uszkodzeń (opcjonalnie, max 3 pliki)
@@ -236,7 +235,7 @@ const ContactForm = () => {
                           <button
                             type="button"
                             onClick={() => removeFile(index)}
-                            className="text-red-400 hover:text-red-300 transition-colors p-1"
+                            className="text-zinc-500 hover:text-red-400 transition-colors"
                             disabled={isSubmitting}
                           >
                             <X className="w-4 h-4" />
@@ -246,49 +245,46 @@ const ContactForm = () => {
                     </div>
                   )}
                 </div>
-                
-                {/* RODO checkbox */}
-                <div className="pt-4 border-t border-zinc-800">
-                  <div className="flex items-start">
+                )}
+
+                {/* Zgoda na przetwarzanie danych */}
+                <div className="space-y-4">
+                  <label className="flex items-start space-x-3 cursor-pointer">
                     <input 
-                      id="zgoda-rodo" 
-                      name="zgoda-rodo" 
-                      type="checkbox" 
                       required 
-                      className="h-4 w-4 text-orange-600 bg-zinc-700 border-zinc-600 rounded mt-1 focus:ring-orange-500 focus:ring-2" 
+                      type="checkbox" 
+                      name="consent" 
+                      className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-zinc-700 bg-zinc-800 rounded" 
                       disabled={isSubmitting}
                     />
-                    <label htmlFor="zgoda-rodo" className="ml-3 text-sm text-zinc-400 leading-relaxed">
-                      Wyrażam zgodę na przetwarzanie moich danych osobowych przez Osiecki Customs w celu przedstawienia oferty handlowej zgodnie z{' '}
-                      <button 
-                        type="button" 
-                        onClick={() => openModal('privacy')}
-                        className="text-orange-500 hover:text-orange-400 underline transition-colors"
-                      >
+                    <span className="text-sm text-zinc-300 leading-relaxed">
+                      Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z 
+                      <button type="button" onClick={() => openModal('rodo')} className="text-orange-500 hover:text-orange-400 underline mx-1">
                         Polityką Prywatności
                       </button>
-                      . <span className="text-red-400">*</span>
-                    </label>
-                  </div>
-
-                  <p className="text-xs text-zinc-500 mt-3">
-                    * Pole wymagane. Twoje dane są bezpieczne i nie będą udostępniane osobom trzecim.{' '}
-                    <button 
-                      type="button"
-                      onClick={() => openModal('rodo')}
-                      className="text-orange-500 hover:text-orange-400 underline transition-colors"
-                    >
-                      Więcej o RODO
-                    </button>
-                  </p>
+                      w celu udzielenia odpowiedzi na wysłane zapytanie.
+                    </span>
+                  </label>
+                  
+                  <label className="flex items-start space-x-3 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      name="marketing" 
+                      className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-zinc-700 bg-zinc-800 rounded" 
+                      disabled={isSubmitting}
+                    />
+                    <span className="text-sm text-zinc-400 leading-relaxed">
+                      Wyrażam zgodę na otrzymywanie informacji handlowych drogą elektroniczną (opcjonalnie).
+                    </span>
+                  </label>
                 </div>
 
-                <div className="text-center pt-6">
+                <div className="pt-4">
                   <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className={`inline-flex items-center justify-center px-12 py-4 rounded-xl font-bold text-lg shadow-lg transform transition-all duration-300 min-w-[300px] ${
-                      isSubmitting
+                    className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-300 ${
+                      isSubmitting 
                         ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
                         : 'bg-gradient-to-r from-orange-600 to-red-600 text-black hover:scale-105 hover:from-orange-700 hover:to-red-700'
                     }`}
