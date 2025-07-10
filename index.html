@@ -81,6 +81,35 @@
   </head>
   <body>
     <div id="root"></div>
+    
+    <!-- 
+      UKRYTY FORMULARZ DLA NETLIFY FORMS 
+      Netlify potrzebuje statycznego HTML formularza żeby wykryć go podczas build time.
+      Ten formularz jest ukryty, ale pozwala Netlify utworzyć endpoint dla React formularza.
+    -->
+    <form 
+      name="contact" 
+      method="POST" 
+      data-netlify="true" 
+      data-netlify-honeypot="bot-field" 
+      style="display: none;"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      
+      <!-- Honeypot field -->
+      <label>
+        Don't fill this out if you're human: <input name="bot-field" />
+      </label>
+      
+      <!-- Wszystkie pola z React formularza -->
+      <input name="name" type="text" />
+      <input name="phone" type="tel" />
+      <input name="email" type="email" />
+      <textarea name="message"></textarea>
+      <input name="files" type="file" multiple />
+      <input name="zgoda-rodo" type="checkbox" />
+    </form>
+    
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

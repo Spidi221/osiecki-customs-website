@@ -27,7 +27,7 @@ const ContactForm = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
-  // POPRAWIONA funkcja handleSubmit dla Netlify Forms
+  // UPROSZCZONA funkcja handleSubmit bez plików (na test)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -36,28 +36,30 @@ const ContactForm = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
-    // Dodaj pliki do FormData (Netlify obsługuje pliki w FormData)
-    files.forEach((file, index) => {
-      formData.append(`file-${index}`, file);
-    });
+    // TYMCZASOWO: pomijamy pliki, testujemy tylko podstawowe pola
+    // files.forEach((file, index) => {
+    //   formData.append(`file-${index}`, file);
+    // });
     
     try {
-      // POPRAWKA: używamy FormData bezpośrednio (bez URLSearchParams)
+      // Podstawowe podejście dla Netlify Forms
       const response = await fetch('/', {
         method: 'POST',
-        body: formData, // Używamy FormData bezpośrednio
-        // Nie ustawiamy Content-Type - niech przeglądarka ustawi automatycznie dla FormData
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString(),
       });
 
       if (response.ok) {
         setIsSubmitted(true);
         setFiles([]); // Wyczyść pliki po udanym wysłaniu
       } else {
-        throw new Error('Błąd wysyłania formularza');
+        const errorText = await response.text();
+        console.error('Response error:', response.status, errorText);
+        throw new Error(`Błąd ${response.status}: ${errorText || 'Nieznany błąd'}`);
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      setSubmitError('Wystąpił błąd podczas wysyłania. Spróbuj ponownie lub zadzwoń: +48 607 550 305');
+      setSubmitError(`Wystąpił błąd podczas wysyłania: ${error.message}. Spróbuj ponownie lub zadzwoń: +48 607 550 305`);
     } finally {
       setIsSubmitting(false);
     }
