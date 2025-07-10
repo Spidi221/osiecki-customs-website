@@ -27,6 +27,7 @@ const ContactForm = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
+  // POPRAWIONA funkcja handleSubmit dla Netlify Forms
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -35,24 +36,27 @@ const ContactForm = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
-    // Dodaj pliki do FormData
+    // Dodaj pliki do FormData (Netlify obsługuje pliki w FormData)
     files.forEach((file, index) => {
       formData.append(`file-${index}`, file);
     });
     
     try {
+      // POPRAWKA: używamy FormData bezpośrednio (bez URLSearchParams)
       const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString(),
+        body: formData, // Używamy FormData bezpośrednio
+        // Nie ustawiamy Content-Type - niech przeglądarka ustawi automatycznie dla FormData
       });
 
       if (response.ok) {
         setIsSubmitted(true);
+        setFiles([]); // Wyczyść pliki po udanym wysłaniu
       } else {
         throw new Error('Błąd wysyłania formularza');
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       setSubmitError('Wystąpił błąd podczas wysyłania. Spróbuj ponownie lub zadzwoń: +48 607 550 305');
     } finally {
       setIsSubmitting(false);
