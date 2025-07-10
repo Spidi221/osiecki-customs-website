@@ -1,9 +1,11 @@
+// src/components/ContactForm.tsx
 import { useState } from 'react';
 import { Check, UploadCloud, X, AlertCircle } from 'lucide-react';
 import FadeIn from './animations/FadeIn';
 import LegalModal from './LegalModal';
 
 const ContactForm = () => {
+  // ... stany bez zmian ...
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -11,10 +13,12 @@ const ContactForm = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'privacy' | 'terms' | 'rodo'>('privacy');
 
+
   const openModal = (type: 'privacy' | 'terms' | 'rodo') => {
     setModalType(type);
     setModalOpen(true);
   };
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -27,39 +31,22 @@ const ContactForm = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError('');
 
-    // ZMIANA: Tworzymy FormData ręcznie dla pełnej kontroli
-    const formData = new FormData();
-    const formElement = e.currentTarget;
-
-    // Pobieramy wartości z pól formularza
-    const name = (formElement.elements.namedItem('name') as HTMLInputElement).value;
-    const phone = (formElement.elements.namedItem('phone') as HTMLInputElement).value;
-    const email = (formElement.elements.namedItem('email') as HTMLInputElement).value;
-    const message = (formElement.elements.namedItem('message') as HTMLTextAreaElement).value;
-    const consent = (formElement.elements.namedItem('consent') as HTMLInputElement).checked;
-
-    // Dodajemy wszystkie pola do FormData, zgodnie z ukrytym formularzem w index.html
-    formData.append('form-name', 'contact');
-    formData.append('name', name);
-    formData.append('phone', phone);
-    formData.append('email', email);
-    formData.append('message', message);
-    formData.append('consent', String(consent));
+    const formData = new FormData(e.currentTarget);
     
-    // WAŻNE: Używamy nazwy 'files[]' dla wielu plików, Netlify tego oczekuje.
-    // Jeśli to nie zadziała, spróbujemy z 'files'
-    files.forEach((file) => {
-      formData.append('files[]', file);
+    // ZMIANA KLUCZOWA: Usuwamy standardowe pole 'files' i dodajemy pliki z unikalnymi nazwami
+    formData.delete('files'); // Usuwamy pole, które dodał input
+    files.forEach((file, index) => {
+      formData.append(`file-${index + 1}`, file); // Dodajemy file-1, file-2, etc.
     });
 
     try {
-      // ZMIANA: Fetchujemy do aktualnej ścieżki, co jest bezpieczniejszą praktyką
-      const response = await fetch(formElement.action, {
+      const response = await fetch('/', { // Netlify wymaga POST na główną ścieżkę
         method: 'POST',
         body: formData,
       });
@@ -68,17 +55,17 @@ const ContactForm = () => {
         setIsSubmitted(true);
         document.getElementById('wycena')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        throw new Error(`Błąd serwera: ${response.status} ${response.statusText}`);
+        throw new Error(`Błąd serwera: ${response.status}`);
       }
-    } catch (error: unknown) {
+    } catch (error) {
       console.error('Błąd wysyłania formularza:', error);
       setSubmitError('Wystąpił błąd podczas wysyłania. Spróbuj ponownie lub zadzwoń: +48 607 550 305');
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  const formatFileSize = (bytes: number) => {
+  
+    const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB'];
@@ -86,7 +73,11 @@ const ContactForm = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  if (isSubmitted) {
+  // ... reszta komponentu (część JSX) pozostaje bez zmian ...
+  // Ważne, żeby w JSX input na pliki miał wciąż atrybut `multiple`
+  // <input id="file-upload" name="files" type="file" multiple ... />
+  // To zapewnia dobre UX, a my i tak przejmujemy kontrolę w `handleSubmit`.
+    if (isSubmitted) {
     return (
       <>
         <section id="wycena" className="py-20 bg-black scroll-mt-24">
@@ -144,11 +135,9 @@ const ContactForm = () => {
                 </div>
               )}
 
-              {/* ZMIANA: Dodajemy `action` do formularza, aby było jasne, gdzie wysyłamy dane */}
               <form
                 name="contact"
                 method="POST"
-                action="/"
                 data-netlify="true"
                 data-netlify-honeypot="bot-field"
                 onSubmit={handleSubmit}
@@ -178,8 +167,7 @@ const ContactForm = () => {
                       <div className="flex text-sm text-zinc-400">
                         <label htmlFor="file-upload" className="relative cursor-pointer bg-zinc-800 rounded-md font-medium text-orange-500 hover:text-orange-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-zinc-900 focus-within:ring-orange-500 px-2 transition-colors">
                           <span>Wybierz pliki</span>
-                          {/* WAŻNE: Nazwa pola to 'files[]', żeby Netlify wiedział, że to tablica */}
-                          <input id="file-upload" name="files[]" type="file" className="sr-only" multiple accept="image/*,.pdf" onChange={handleFileChange} disabled={isSubmitting} />
+                          <input id="file-upload" name="files" type="file" className="sr-only" multiple accept="image/*,.pdf" onChange={handleFileChange} disabled={isSubmitting} />
                         </label>
                         <p className="pl-1">lub przeciągnij i upuść</p>
                       </div>
