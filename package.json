@@ -4,7 +4,12 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Profesjonalna strona internetowa dla warsztatu blacharsko-lakierniczego Osiecki Customs",
-  "keywords": ["warsztat", "blacharstwo", "lakiernictwo", "naprawy powypadkowe"],
+  "keywords": [
+    "warsztat",
+    "blacharstwo",
+    "lakiernictwo",
+    "naprawy powypadkowe"
+  ],
   "author": "Osiecki Customs",
   "scripts": {
     "dev": "vite --host",
@@ -17,6 +22,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "lucide-react": "^0.407.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
