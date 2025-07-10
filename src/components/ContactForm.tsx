@@ -35,10 +35,10 @@ const ContactForm = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
-    // Tymczasowo wyłączamy upload plików - skupiamy się na działającym formularzu
-    // files.forEach((file, index) => {
-    //   formData.append(`file-${index}`, file);
-    // });
+    // Dodaj pliki do FormData
+    files.forEach((file, index) => {
+      formData.append(`file-${index}`, file);
+    });
     
     try {
       const response = await fetch('/', {
@@ -50,6 +50,11 @@ const ContactForm = () => {
       if (response.ok) {
         setIsSubmitted(true);
         console.log('Formularz wysłany pomyślnie');
+        // Przewiń do góry sekcji po pomyślnym wysłaniu
+        document.getElementById('wycena')?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
       } else {
         console.error('Błąd response:', response.status, response.statusText);
         throw new Error(`Błąd serwera: ${response.status}`);
@@ -95,6 +100,11 @@ const ContactForm = () => {
                   onClick={() => {
                     setIsSubmitted(false);
                     setFiles([]);
+                    // Przewiń do formularza po resecie
+                    document.getElementById('wycena')?.scrollIntoView({ 
+                      behavior: 'smooth', 
+                      block: 'start' 
+                    });
                   }}
                   className="text-orange-500 hover:text-orange-400 transition-colors underline"
                 >
@@ -190,8 +200,7 @@ const ContactForm = () => {
                   disabled={isSubmitting}
                 />
                 
-                {/* Upload plików - tymczasowo wyłączony */}
-                {false && (
+                {/* Upload plików */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-2">
                     Dodaj zdjęcia uszkodzeń (opcjonalnie, max 3 pliki)
@@ -245,7 +254,6 @@ const ContactForm = () => {
                     </div>
                   )}
                 </div>
-                )}
 
                 {/* Zgoda na przetwarzanie danych */}
                 <div className="space-y-4">
@@ -263,18 +271,6 @@ const ContactForm = () => {
                         Polityką Prywatności
                       </button>
                       w celu udzielenia odpowiedzi na wysłane zapytanie.
-                    </span>
-                  </label>
-                  
-                  <label className="flex items-start space-x-3 cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      name="marketing" 
-                      className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-zinc-700 bg-zinc-800 rounded" 
-                      disabled={isSubmitting}
-                    />
-                    <span className="text-sm text-zinc-400 leading-relaxed">
-                      Wyrażam zgodę na otrzymywanie informacji handlowych drogą elektroniczną (opcjonalnie).
                     </span>
                   </label>
                 </div>
