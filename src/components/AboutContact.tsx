@@ -16,6 +16,9 @@ const AboutContact = () => {
               <p className="text-zinc-400">
                 Specjalizujemy się w kompleksowych naprawach powypadkowych. Nasz zespół to wykwalifikowani specjaliści, którzy traktują każde auto jak własne. Korzystamy z nowoczesnego sprzętu i najlepszych materiałów, co pozwala nam gwarantować najwyższą jakość usług.
               </p>
+              <p className="text-zinc-400">
+                Obsługujemy klientów z całego regionu - oprócz Góry Kalwarii, regularnie wykonujemy naprawy dla mieszkańców Piaseczna, Konstancina-Jeziorny, Grójca, Otwocka, Karczewa, Warki, Celestynowa i Chynowa. Niezależnie od miejscowości, gwarantujemy ten sam wysoki standard usług.
+              </p>
             </div>
           </FadeIn>
           
