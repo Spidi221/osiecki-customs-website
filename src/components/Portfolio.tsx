@@ -30,7 +30,7 @@ const Portfolio = () => {
                   <div>
                     <LazyImage
                       src={project.beforeImage}
-                      alt={`Przed naprawą: ${project.title}`}
+                      alt={project.beforeAlt}
                       className="w-full h-64 object-cover rounded-lg shadow-lg"
                       width={400}
                       height={256}
@@ -40,7 +40,7 @@ const Portfolio = () => {
                   <div>
                     <LazyImage
                       src={project.afterImage}
-                      alt={`Po naprawie: ${project.title}`}
+                      alt={project.afterAlt}
                       className="w-full h-64 object-cover rounded-lg shadow-lg"
                       width={400}
                       height={256}
